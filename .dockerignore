@@ -1,0 +1,64 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+build
+ksef-pdf
+ksef-pdf-linux
+ksef-pdf-macos
+ksef-pdf.exe
+release-*
+
+# Tests
+coverage
+.vitest
+*.test.ts
+*.spec.ts
+
+# Git
+.git
+.gitignore
+.github
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# Docs
+*.md
+!package.json
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp
+temp
+out
+.cache
+*.tsbuildinfo
+
+# Test outputs
+test-*.pdf
+
+# Scripts 
+*.sh
+
+# Config files
+.prettierrc.json
+.prettierignore
+eslint.config.mts
+tsconfig.*.json
+vite.config.ts
+
+# App public
+src/app-public
+assets
+examples

@@ -2,6 +2,28 @@
 
 Biblioteka do generowania wizualizacji PDF faktur oraz UPO na podstawie plików XML po stronie klienta.
 
+## CLI App
+
+### Szybki start:
+
+```bash
+# Zbuduj executable (wymaga Bun)
+bun run build:cli
+
+# Użyj - NIE wymaga instalacji!
+./ksef-pdf faktura.xml -o output.pdf
+```
+
+### Budowanie dla różnych platform:
+```bash
+bun run build:cli:linux    # Linux x64
+bun run build:cli:windows  # Windows x64
+bun run build:cli:macos    # macOS x64
+bun run build:cli:all      # Wszystkie platformy
+```
+
+**Więcej:** [CLI.md](./CLI.md)
+
 ---
 
 ## 1. Główne ustalenia
@@ -113,11 +135,14 @@ Raport: /coverage/index.html
 
 ---
 
-## Dokumentacja używanych narzędzi
+
+
+## 📖 Dokumentacja używanych narzędzi
 
 - Vitest Docs — https://vitest.dev/guide/
 - Vite Docs — https://vitejs.dev/guide/
 - TypeScript Handbook — https://www.typescriptlang.org/docs/
+- Bun Docs — https://bun.sh/docs
 
 ---
 

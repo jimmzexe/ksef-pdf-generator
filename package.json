@@ -4,20 +4,26 @@
   "scripts": {
     "dev": "vite --mode public --config vite.config.ts",
     "build": "vite build --mode production",
+    "build:cli": "bun build src/cli.ts --compile --outfile ksef-pdf",
+    "build:cli:linux": "bun build src/cli.ts --compile --target=bun-linux-x64 --outfile ksef-pdf-linux",
+    "build:cli:windows": "bun build src/cli.ts --compile --target=bun-windows-x64 --outfile ksef-pdf.exe",
+    "build:cli:macos": "bun build src/cli.ts --compile --target=bun-darwin-x64 --outfile ksef-pdf-macos",
+    "build:cli:all": "bun run build:cli:linux && bun run build:cli:windows && bun run build:cli:macos",
+    "cli": "bun run src/cli.ts",
     "type": "tsc -p src/app-public/tsconfig.json --noEmit",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:ci": "vitest run --coverage"
   },
-  "main": "./ksef-fe-invoice-converter.umd.js",
-  "module": "./ksef-fe-invoice-converter.es.js",
-  "types": "./src/lib/index.d.ts",
+  "main": "./dist/ksef-fe-invoice-converter.umd.cjs",
+  "module": "./dist/ksef-fe-invoice-converter.js",
+  "types": "./dist/index.d.ts",
   "type": "module",
   "exports": {
     ".": {
-      "types": "./src/lib/index.d.ts",
-      "import": "./ksef-fe-invoice-converter.es.js",
-      "require": "./ksef-fe-invoice-converter.umd.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/ksef-fe-invoice-converter.js",
+      "require": "./dist/ksef-fe-invoice-converter.umd.cjs"
     }
   },
   "keywords": [],

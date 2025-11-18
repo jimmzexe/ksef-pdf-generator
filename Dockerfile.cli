@@ -1,0 +1,29 @@
+FROM oven/bun:1 AS base
+WORKDIR /app
+
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lockb* /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
+
+
+FROM base AS build
+COPY --from=install /temp/dev/node_modules node_modules
+COPY package.json bunfig.toml ./
+COPY src ./src
+
+
+RUN bun run build:cli:linux
+
+FROM debian:bookworm-slim AS release
+
+WORKDIR /app
+
+COPY --from=build /app/ksef-pdf-linux /usr/local/bin/ksef-pdf
+
+RUN chmod +x /usr/local/bin/ksef-pdf
+
+WORKDIR /data
+
+ENTRYPOINT ["ksef-pdf"]
+CMD ["--help"]

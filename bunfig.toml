@@ -1,0 +1,6 @@
+[build]
+target = "bun"
+outdir = "./build"
+
+minify = true
+sourcemap = "none"
