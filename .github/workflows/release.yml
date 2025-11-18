@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            target: bun-linux-x64
+            artifact: ksef-pdf-linux
+          - os: windows-latest
+            platform: windows
+            target: bun-windows-x64
+            artifact: ksef-pdf.exe
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build executable
+        run: bun build src/cli.ts --compile --target=${{ matrix.target }} --outfile ${{ matrix.artifact }}
+
+      - name: Test executable
+        run: |
+          chmod +x ${{ matrix.artifact }}
+          ./${{ matrix.artifact }} --help
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}
+          retention-days: 1
+
+  release:
+    name: Create Release
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Display structure
+        run: ls -R artifacts
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/ksef-pdf-linux/ksef-pdf-linux
+            artifacts/ksef-pdf-macos/ksef-pdf-macos
+            artifacts/ksef-pdf.exe/ksef-pdf.exe
+          draft: false
+          prerelease: false
+          generate_release_notes: true
