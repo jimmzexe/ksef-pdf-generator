@@ -23,6 +23,10 @@ jobs:
             platform: windows
             target: bun-windows-x64
             artifact: ksef-pdf.exe
+          - os: macos-latest
+            platform: macos
+            target: bun-darwin-arm64
+            artifact: ksef-pdf-macos
 
     steps:
       - uses: actions/checkout@v4
@@ -81,6 +85,7 @@ jobs:
           files: |
             artifacts/ksef-pdf-linux/ksef-pdf-linux
             artifacts/ksef-pdf.exe/ksef-pdf.exe
+            artifacts/ksef-pdf-macos/ksef-pdf-macos
           draft: false
           prerelease: false
           generate_release_notes: true
